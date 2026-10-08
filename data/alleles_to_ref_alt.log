@@ -1,0 +1,112 @@
+2026-10-08 18:44:14 [INFO] Started
+2026-10-08 18:44:14 [INFO] Input:         FP_SNPs_10k_GB38_twoAllelsFormat.tsv
+2026-10-08 18:44:14 [INFO] Output:        FP_SNPs_10k_GB38_REF_ALT.tsv
+2026-10-08 18:44:14 [INFO] Reference dir: ref
+2026-10-08 18:44:14 [INFO] Header validated.
+2026-10-08 18:44:14 [INFO] Opened reference: ref/chr1.fa
+2026-10-08 18:44:14 [WARNING] Line 80: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 377: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 420: no reference match at chr1:145899153 (a1=T a2=C)
+2026-10-08 18:44:14 [WARNING] Line 438: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 477: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 699: invalid alleles 0/0
+2026-10-08 18:44:14 [INFO] Opened reference: ref/chr2.fa
+2026-10-08 18:44:14 [WARNING] Line 1238: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 1283: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 1644: invalid alleles 0/0
+2026-10-08 18:44:14 [INFO] Opened reference: ref/chr3.fa
+2026-10-08 18:44:14 [WARNING] Line 1782: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 1847: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 1878: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 1913: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 2113: invalid alleles 0/0
+2026-10-08 18:44:14 [INFO] Opened reference: ref/chr4.fa
+2026-10-08 18:44:14 [WARNING] Line 2583: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 2666: invalid alleles 0/0
+2026-10-08 18:44:14 [INFO] Opened reference: ref/chr5.fa
+2026-10-08 18:44:14 [WARNING] Line 2989: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 3037: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 3058: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 3106: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 3113: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 3120: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 3126: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 3172: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 3176: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 3183: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 3210: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 3267: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 3292: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 3297: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 3498: invalid alleles 0/0
+2026-10-08 18:44:14 [INFO] Opened reference: ref/chr6.fa
+2026-10-08 18:44:14 [WARNING] Line 3664: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 3785: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 3990: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 4041: invalid alleles 0/0
+2026-10-08 18:44:14 [INFO] Opened reference: ref/chr7.fa
+2026-10-08 18:44:14 [WARNING] Line 4392: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 4452: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 4496: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 4646: invalid alleles 0/0
+2026-10-08 18:44:14 [INFO] Opened reference: ref/chr8.fa
+2026-10-08 18:44:14 [WARNING] Line 4911: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 4915: invalid alleles 0/0
+2026-10-08 18:44:14 [INFO] Opened reference: ref/chr9.fa
+2026-10-08 18:44:14 [WARNING] Line 5317: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 5463: invalid alleles 0/0
+2026-10-08 18:44:14 [INFO] Opened reference: ref/chr10.fa
+2026-10-08 18:44:14 [WARNING] Line 5968: no reference match at chr10:47320205 (a1=C a2=A)
+2026-10-08 18:44:14 [WARNING] Line 5969: no reference match at chr10:47268340 (a1=T a2=C)
+2026-10-08 18:44:14 [WARNING] Line 5977: no reference match at chr10:46031827 (a1=A a2=G)
+2026-10-08 18:44:14 [WARNING] Line 5979: invalid alleles 0/0
+2026-10-08 18:44:14 [INFO] Opened reference: ref/chr11.fa
+2026-10-08 18:44:14 [WARNING] Line 6401: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 6666: invalid alleles 0/0
+2026-10-08 18:44:14 [INFO] Opened reference: ref/chr12.fa
+2026-10-08 18:44:14 [WARNING] Line 6868: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 6869: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 6870: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 6871: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 6872: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 6873: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 6874: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 6875: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 6876: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 6877: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 6878: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 6879: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 6880: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 7120: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 7161: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 7300: invalid alleles 0/0
+2026-10-08 18:44:14 [INFO] Opened reference: ref/chr13.fa
+2026-10-08 18:44:14 [WARNING] Line 7415: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 7605: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 7698: invalid alleles 0/0
+2026-10-08 18:44:14 [INFO] Opened reference: ref/chr14.fa
+2026-10-08 18:44:14 [WARNING] Line 7979: invalid alleles 0/0
+2026-10-08 18:44:14 [INFO] Opened reference: ref/chr15.fa
+2026-10-08 18:44:14 [WARNING] Line 8063: no reference match at chr15:22832210 (a1=T a2=C)
+2026-10-08 18:44:14 [WARNING] Line 8187: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 8226: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 8343: invalid alleles 0/0
+2026-10-08 18:44:14 [INFO] Opened reference: ref/chr16.fa
+2026-10-08 18:44:14 [WARNING] Line 8425: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 8606: invalid alleles 0/0
+2026-10-08 18:44:14 [INFO] Opened reference: ref/chr17.fa
+2026-10-08 18:44:14 [WARNING] Line 8935: invalid alleles 0/0
+2026-10-08 18:44:14 [INFO] Opened reference: ref/chr18.fa
+2026-10-08 18:44:14 [WARNING] Line 8989: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 8995: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 9031: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 9072: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 9088: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 9256: invalid alleles 0/0
+2026-10-08 18:44:14 [INFO] Opened reference: ref/chr19.fa
+2026-10-08 18:44:14 [INFO] Opened reference: ref/chr20.fa
+2026-10-08 18:44:14 [INFO] Opened reference: ref/chr21.fa
+2026-10-08 18:44:14 [WARNING] Line 9724: invalid alleles 0/0
+2026-10-08 18:44:14 [WARNING] Line 9759: invalid alleles 0/0
+2026-10-08 18:44:14 [INFO] Opened reference: ref/chr22.fa
+2026-10-08 18:44:14 [INFO] Finished: total=10000 written=9916 skipped=84
