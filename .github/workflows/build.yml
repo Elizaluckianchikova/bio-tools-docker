@@ -15,13 +15,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
       - name: Show repository contents
         run: |
-          echo "Repository root "
+          echo "Repository root:"
           ls -la
-          echo " scripts/ "
+          echo "scripts/:"
           ls -la scripts/ || echo "scripts/ NOT FOUND"
 
       - name: Build Docker image
