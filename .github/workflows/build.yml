@@ -21,8 +21,6 @@ jobs:
         run: |
           echo "Repository root:"
           ls -la
-          echo "scripts/:"
-          ls -la scripts/ || echo "scripts/ NOT FOUND"
 
       - name: Build Docker image
         run: docker build --progress=plain -t task10-bioinfo:latest .
@@ -38,6 +36,9 @@ jobs:
 
       - name: Check pysam
         run: docker run --rm task10-bioinfo:latest python3 -c "import pysam; print('pysam', pysam.__version__)"
+
+      - name: Check REF/ALT script
+        run: docker run --rm task10-bioinfo:latest python3 /opt/task10/alleles_to_ref_alt.py --help
 
       - name: Check environment variables
         run: |
