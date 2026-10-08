@@ -105,11 +105,16 @@ ENV SAMTOOLS=${SOFT}/samtools-1.24-br260709/bin/samtools
 ENV BCFTOOLS=${SOFT}/bcftools-1.24-br260709/bin/bcftools
 ENV VCFTOOLS=${SOFT}/vcftools-0.1.17-br250515/bin/vcftools
 
+# --- Task 3: copy the Python script into the image ---
+COPY alleles_to_ref_alt.py /opt/task10/alleles_to_ref_alt.py
+RUN chmod +x /opt/task10/alleles_to_ref_alt.py
+
 WORKDIR /work
 
 RUN ${SAMTOOLS} --version \
     && ${BCFTOOLS} --version \
     && ${VCFTOOLS} --version \
-    && python3 -c "import pysam; print('pysam', pysam.__version__)"
+    && python3 -c "import pysam; print('pysam', pysam.__version__)" \
+    && python3 /opt/task10/alleles_to_ref_alt.py --help
 
 CMD ["/bin/bash"]
