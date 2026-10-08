@@ -1,25 +1,16 @@
 # FP_SNPs: preprocessing and REF/ALT reconstruction
 
-This document describes how the FP SNP panel from GRAF 2.4 is preprocessed into a VCF-like TSV and how the reference and alternative alleles are reconstructed for each SNP using the GRCh38.d1.vd1 human reference genome.
+This document describes the preprocessing of the FP SNP panel from GRAF 2.4 and the reconstruction of reference and alternative alleles for each SNP using the GRCh38.d1.vd1 human reference genome.
 
 ## Source data
 
-The FP SNP panel originates from the GRAF software package (version 2.4), described in:
+The FP SNP panel comes from GRAF 2.4, described in Yu et al., "Quickly identifying identical and closely related subjects in large databases using genotype data" (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5469481/). The panel contains 10,000 autosomal unlinked biallelic SNPs selected for fingerprinting and population structure analysis, plus 1,000 X-chromosome SNPs for sex determination.
 
-> Yu et al. *Quickly identifying identical and closely related subjects in large databases using genotype data.*
-> https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5469481/
+The original `GrafPkg.tar.gz` archive was no longer available from the NCBI download page at the time of writing (HTTP 404). The equivalent data was taken from the GRAF repository on GitHub at https://github.com/ncbi/graf. The file downloaded from the repository is distributed as a tar archive; inside it is the PLINK dataset `G1000FpGeno.bim`, which contains 10,000 autosomal SNPs with GRCh37 (hg19) coordinates. X-chromosome records are not present in this file, so no additional filtering by chromosome is needed at the preprocessing stage.
 
-The panel contains 10,000 autosomal unlinked biallelic SNPs selected for fingerprinting and population structure analysis, plus 1,000 X-chromosome SNPs for sex determination.
+The `.bim` file is stored in the repository as `data/G1000FpGeno.bim` and serves as the source file for the pipeline.
 
-The original archive `GrafPkg.tar.gz` was no longer available from the NCBI download page at the time of writing (HTTP 404). The equivalent PLINK-format data was taken from the GRAF repository on GitHub:
-
-```
-https://github.com/ncbi/graf
-```
-
-The file used for preprocessing is `data/G1000FpGeno.bim`. It contains 10,000 autosomal SNPs with GRCh37 (hg19) coordinates. X-chromosome records are not present in this file, so no additional filtering by chromosome is needed at the preprocessing stage.
-
-## Preprocessing to `FP_SNPs_10k_GB38_twoAllelsFormat.tsv`
+## Preprocessing to FP_SNPs_10k_GB38_twoAllelsFormat.tsv
 
 The `.bim` file uses the standard PLINK column order:
 
@@ -27,23 +18,9 @@ The `.bim` file uses the standard PLINK column order:
 CHR  SNP_ID  CM  BP(hg19)  A1  A2
 ```
 
-The target format expected by the REF/ALT converter is:
+The target format expected by the REF/ALT converter is `#CHROM POS ID allele1 allele2` with GRCh38 coordinates. The conversion is done in two steps.
 
-```
-#CHROM  POS  ID  allele1  allele2
-```
-
-with GRCh38 coordinates. The conversion has two parts.
-
-### Lift-over from GRCh37 to GRCh38
-
-Coordinates in the `.bim` file are in GRCh37. They must be lifted to GRCh38 using the UCSC chain file `hg19ToHg38.over.chain`, available at:
-
-```
-http://hgdownload.cse.ucsc.edu/goldenPath/hg19/liftOver/hg19ToHg38.over.chain.gz
-```
-
-The lift-over is performed with `pyliftover`:
+**Lift-over from GRCh37 to GRCh38.** Coordinates in the `.bim` file are in GRCh37, so they must be lifted to GRCh38 using the UCSC chain file `hg19ToHg38.over.chain` (available at http://hgdownload.cse.ucsc.edu/goldenPath/hg19/liftOver/hg19ToHg38.over.chain.gz). The lift-over is performed with `pyliftover`:
 
 ```python
 from pyliftover import LiftOver
@@ -75,33 +52,19 @@ with open("data/G1000FpGeno.bim") as fin, \
 print(f"total={total} converted={converted} lost={lost}")
 ```
 
-Output:
+The output of this step is:
 
 ```
 total=10000 converted=10000 lost=0
 ```
 
-All 10,000 SNPs were successfully lifted from GRCh37 to GRCh38. The `chr` prefix is added during lift-over; the SNP ID is taken from the original `rs` identifier.
+All 10,000 SNPs were successfully lifted from GRCh37 to GRCh38. The `chr` prefix is added during lift-over, and the SNP ID is taken from the original `rs` identifier.
 
-### Output file
-
-`data/FP_SNPs_10k_GB38_twoAllelsFormat.tsv` — 10,000 records plus a header, five tab-separated columns:
-
-```
-#CHROM  POS  ID  allele1  allele2
-```
-
-The distribution of records across chromosomes matches the original panel: chr1 — 810, chr2 — 864, …, chr22 — 138.
+**Output file.** `data/FP_SNPs_10k_GB38_twoAllelsFormat.tsv` contains 10,000 records plus a header, with five tab-separated columns: `#CHROM`, `POS`, `ID`, `allele1`, `allele2`. The distribution of records across chromosomes matches the original panel: chr1 — 810, chr2 — 864, and so on down to chr22 — 138.
 
 ## Reference genome
 
-The reference genome is GRCh38.d1.vd1 from GDC:
-
-```
-https://gdc.cancer.gov/about-data/data-harmonization-and-generation/gdc-reference-files
-```
-
-It is split into per-chromosome FASTA files with matching `.fai` indices:
+The reference genome is GRCh38.d1.vd1 from GDC (https://gdc.cancer.gov/about-data/data-harmonization-and-generation/gdc-reference-files), split into per-chromosome FASTA files with matching `.fai` indices:
 
 ```
 /ref/GRCh38.d1.vd1_mainChr/sepChrs/
@@ -113,78 +76,37 @@ It is split into per-chromosome FASTA files with matching `.fai` indices:
   chrM.fa   chrM.fa.fai
 ```
 
-The reference genome is **not** included in this repository. It is expected on the host machine at `/mnt/data/ref/GRCh38.d1.vd1_mainChr/sepChrs/` and is mounted into the container at `/ref/GRCh38.d1.vd1_mainChr/sepChrs/`.
+The reference genome is not included in this repository. It is expected on the host machine at `/mnt/data/ref/GRCh38.d1.vd1_mainChr/sepChrs/` and is mounted into the container at `/ref/GRCh38.d1.vd1_mainChr/sepChrs/` when the container is started.
 
 ## REF/ALT reconstruction
 
-The script `alleles_to_ref_alt.py` reads each SNP from `FP_SNPs_10k_GB38_twoAllelsFormat.tsv`, fetches the reference base at the given position with `pysam.Fastafile`, and determines which of `allele1` / `allele2` matches the reference:
+The script `alleles_to_ref_alt.py` reads each SNP from the preprocessed TSV, fetches the reference base at the given position with `pysam.Fastafile`, and determines which of `allele1` / `allele2` matches the reference. If `allele1` matches and `allele2` does not, then REF = `allele1` and ALT = `allele2`. If `allele2` matches and `allele1` does not, then REF = `allele2` and ALT = `allele1`. If neither allele matches the reference base, the record is reported in the log and skipped. If both alleles match the reference base, the record is treated as unresolvable and also skipped.
 
-- if `allele1` matches the reference and `allele2` does not → REF = `allele1`, ALT = `allele2`;
-- if `allele2` matches the reference and `allele1` does not → REF = `allele2`, ALT = `allele1`;
-- if neither allele matches the reference → the record is reported in the log and skipped;
-- if both alleles match the reference → the record is treated as unresolvable and skipped.
+The script opens the per-chromosome FASTA file on demand and caches the `Fastafile` object, so each chromosome is opened only once during a run.
 
-The script opens the per-chromosome FASTA file on demand and caches the `Fastafile` object, so each chromosome is opened once.
-
-### Usage
-
-Inside the container, the script is available at `/opt/task10/alleles_to_ref_alt.py`:
+Inside the container, the script is available at `/opt/task10/alleles_to_ref_alt.py`. A typical invocation:
 
 ```bash
 python3 /opt/task10/alleles_to_ref_alt.py \
   --input  FP_SNPs_10k_GB38_twoAllelsFormat.tsv \
   --output FP_SNPs_10k_GB38_REF_ALT.tsv \
   --reference-dir /ref/GRCh38.d1.vd1_mainChr/sepChrs \
-  --log    logs/alleles_to_ref_alt.log
+  --log    data/alleles_to_ref_alt.log
 ```
 
-Command-line arguments:
-
-| Argument | Description |
-|---|---|
-| `--input`, `-i` | Input TSV with columns `#CHROM POS ID allele1 allele2`. |
-| `--output`, `-o` | Output TSV with columns `#CHROM POS ID REF ALT`. |
-| `--reference-dir`, `-r` | Directory containing `chrN.fa` and matching `.fai` files. |
-| `--log`, `-l` | Optional path to a log file. |
-| `--help`, `-h` | Print usage and exit. |
-
-The script:
-
-- validates the header of the input file and exits with an error if it does not match;
-- accepts key-value arguments rather than positional ones;
-- handles LF, CRLF, and CR line endings;
-- validates positions and nucleotide characters;
-- logs every skipped record with its line number and reason;
-- writes a timestamped message at every step of the run;
-- exits with a non-zero status on fatal input or reference errors.
+The script accepts the following command-line arguments: `--input` / `-i` for the input TSV, `--output` / `-o` for the output TSV, `--reference-dir` / `-r` for the directory with per-chromosome FASTA files, `--log` / `-l` for an optional log file, and `--help` / `-h` to print usage. In addition, the script validates the header of the input file and exits with an error if it does not match, handles LF, CRLF, and CR line endings, validates positions and nucleotide characters, logs every skipped record with its line number and reason, writes a timestamped message at every step, and exits with a non-zero status on fatal input or reference errors.
 
 ## Results
 
-The script was run on the full panel of 10,000 autosomal SNPs with the GRCh38.d1.vd1 reference genome.
+The script was run on the full panel of 10,000 autosomal SNPs with the GRCh38.d1.vd1 reference genome. The summary is:
 
 ```
 total=10000 written=9916 skipped=84
 ```
 
-- **Written to output:** 9,916 records (99.16 %)
-- **Skipped:** 84 records (0.84 %)
+9,916 records (99.16 %) were written to the output file, and 84 records (0.84 %) were skipped. Of the skipped records, 79 had `allele1 = 0` and `allele2 = 0` in the source `.bim` file, which is the PLINK convention for a missing genotype — such records carry no allele information and cannot be assigned a REF/ALT pair. The remaining 5 records did not match the reference base at the given position: neither `allele1` nor `allele2` corresponded to the nucleotide in GRCh38.d1.vd1. Each such record is listed in the log with chromosome, position, and both alleles. No records were lost due to technical errors — there were no read failures, no missing FASTA files, and no missing `.fai` indices.
 
-Breakdown of skipped records:
-
-- **79 records** had `allele1 = 0` and `allele2 = 0` in the source `.bim` file. This is the PLINK convention for a missing genotype; such records carry no allele information and cannot be assigned a REF/ALT pair.
-- **5 records** did not match the reference base at the given position: neither `allele1` nor `allele2` corresponded to the nucleotide in GRCh38.d1.vd1. Each such record is listed in the log with chromosome, position, and both alleles.
-
-No records were lost due to technical errors — there were no read failures, no missing FASTA files, and no missing `.fai` indices.
-
-### Output file
-
-`data/FP_SNPs_10k_GB38_REF_ALT.tsv` — 9,916 records plus a header, five tab-separated columns:
-
-```
-#CHROM  POS  ID  REF  ALT
-```
-
-Example rows:
+**Output file.** `data/FP_SNPs_10k_GB38_REF_ALT.tsv` contains 9,916 records plus a header with five tab-separated columns: `#CHROM`, `POS`, `ID`, `REF`, `ALT`. A few example rows:
 
 ```
 chr1   1220751   rs2887286  T  C
@@ -194,11 +116,9 @@ chr1   2352457   rs2840528  A  G
 chr22  50577409  rs3213445  T  C
 ```
 
-The distribution of records across chromosomes in the output file matches the input distribution, minus the skipped records. No rows have `REF == ALT`.
+The distribution of records across chromosomes matches the input distribution, minus the skipped records. No rows have `REF == ALT`.
 
-### Log file
-
-`logs/alleles_to_ref_alt.log` — full timestamped log of the run. Example:
+**Log file.** `data/alleles_to_ref_alt.log` contains the full timestamped log of the run:
 
 ```
 2026-10-08 18:16:07 [INFO] Started
@@ -215,14 +135,15 @@ The distribution of records across chromosomes in the output file matches the in
 ## Repository contents
 
 ```
-alleles_to_ref_alt.py                        # the converter
-Task3.ipynb                                  # Colab notebook with the full pipeline
-FP_SNPs_README.md                            # this document
-Dockerfile                                   # Docker image definition
-data/G1000FpGeno.bim                         # original PLINK .bim (GRCh37)
-data/FP_SNPs_10k_GB38_twoAllelsFormat.tsv    # lifted to GRCh38, preprocessed
-data/FP_SNPs_10k_GB38_REF_ALT.tsv            # output of the converter
-logs/alleles_to_ref_alt.log                  # timestamped run log
+alleles_to_ref_alt.py                        the converter
+Task3.ipynb                                  Colab notebook with the full pipeline
+FP_SNPs_README.md                            this document
+Dockerfile                                   Docker image definition
+data/G1000FpGeno.bim                         original PLINK .bim (GRCh37)
+data/FP_SNPs_10k_GB38_twoAllelsFormat.tsv    lifted to GRCh38, preprocessed
+data/FP_SNPs_10k_GB38_REF_ALT.tsv            output of the converter
+data/alleles_to_ref_alt.log                  timestamped run log
 ```
 
 The reference genome is not tracked in the repository; it is mounted into the container at runtime.
+
