@@ -1,0 +1,35 @@
+name: Build Docker image
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t task10-bioinfo:latest .
+
+      - name: Check samtools
+        run: docker run --rm task10-bioinfo:latest samtools --version
+
+      - name: Check bcftools
+        run: docker run --rm task10-bioinfo:latest bcftools --version
+
+      - name: Check vcftools
+        run: docker run --rm task10-bioinfo:latest vcftools --version
+
+      - name: Check pysam
+        run: docker run --rm task10-bioinfo:latest python3 -c "import pysam; print('pysam', pysam.__version__)"
+
+      - name: Check environment variables
+        run: |
+          docker run --rm task10-bioinfo:latest bash -c 'echo $SOFT'
+          docker run --rm task10-bioinfo:latest bash -c 'echo $SAMTOOLS'
+          docker run --rm task10-bioinfo:latest bash -c 'echo $BCFTOOLS'
+          docker run --rm task10-bioinfo:latest bash -c 'echo $VCFTOOLS'
