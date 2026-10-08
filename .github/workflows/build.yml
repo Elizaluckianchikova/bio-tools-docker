@@ -5,15 +5,27 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Show repository contents
+        run: |
+          echo "Repository root "
+          ls -la
+          echo " scripts/ "
+          ls -la scripts/ || echo "scripts/ NOT FOUND"
 
       - name: Build Docker image
-        run: docker build -t task10-bioinfo:latest .
+        run: docker build --progress=plain -t task10-bioinfo:latest .
 
       - name: Check samtools
         run: docker run --rm task10-bioinfo:latest samtools --version
@@ -29,7 +41,7 @@ jobs:
 
       - name: Check environment variables
         run: |
-          docker run --rm task10-bioinfo:latest bash -c 'echo $SOFT'
-          docker run --rm task10-bioinfo:latest bash -c 'echo $SAMTOOLS'
-          docker run --rm task10-bioinfo:latest bash -c 'echo $BCFTOOLS'
-          docker run --rm task10-bioinfo:latest bash -c 'echo $VCFTOOLS'
+          docker run --rm task10-bioinfo:latest bash -c 'echo "SOFT=$SOFT"'
+          docker run --rm task10-bioinfo:latest bash -c 'echo "SAMTOOLS=$SAMTOOLS"'
+          docker run --rm task10-bioinfo:latest bash -c 'echo "BCFTOOLS=$BCFTOOLS"'
+          docker run --rm task10-bioinfo:latest bash -c 'echo "VCFTOOLS=$VCFTOOLS"'
