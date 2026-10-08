@@ -2,6 +2,7 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV SOFT=/soft
+ENV LD_LIBRARY_PATH=${SOFT}/libdeflate-1.26-br260822/lib:${SOFT}/htslib-1.24-br260709/lib
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
@@ -39,6 +40,8 @@ RUN cd /tmp \
        -DCMAKE_INSTALL_PREFIX=${SOFT}/libdeflate-1.26-br260822 \
     && cmake --build libdeflate-src/build --parallel "$(nproc)" \
     && cmake --install libdeflate-src/build \
+    && echo "${SOFT}/libdeflate-1.26-br260822/lib" > /etc/ld.so.conf.d/libdeflate.conf \
+    && ldconfig \
     && rm -rf /tmp/libdeflate-src
 
 # htslib 1.24, release 2026-07-09
@@ -51,6 +54,8 @@ RUN cd /tmp \
        LDFLAGS="-L${SOFT}/libdeflate-1.26-br260822/lib" \
     && make -j"$(nproc)" \
     && make install \
+    && echo "${SOFT}/htslib-1.24-br260709/lib" > /etc/ld.so.conf.d/htslib.conf \
+    && ldconfig \
     && rm -rf /tmp/htslib.tar.bz2 /tmp/htslib-1.24
 
 # samtools 1.24, release 2026-07-09
@@ -60,6 +65,8 @@ RUN cd /tmp \
     && cd samtools-1.24 \
     && ./configure --prefix=${SOFT}/samtools-1.24-br260709 \
        --with-htslib=${SOFT}/htslib-1.24-br260709 \
+       CPPFLAGS="-I${SOFT}/htslib-1.24-br260709/include" \
+       LDFLAGS="-L${SOFT}/htslib-1.24-br260709/lib" \
     && make -j"$(nproc)" \
     && make install \
     && rm -rf /tmp/samtools.tar.bz2 /tmp/samtools-1.24
@@ -71,6 +78,8 @@ RUN cd /tmp \
     && cd bcftools-1.24 \
     && ./configure --prefix=${SOFT}/bcftools-1.24-br260709 \
        --with-htslib=${SOFT}/htslib-1.24-br260709 \
+       CPPFLAGS="-I${SOFT}/htslib-1.24-br260709/include" \
+       LDFLAGS="-L${SOFT}/htslib-1.24-br260709/lib" \
     && make -j"$(nproc)" \
     && make install \
     && rm -rf /tmp/bcftools.tar.bz2 /tmp/bcftools-1.24
@@ -89,7 +98,6 @@ RUN cd /tmp \
 RUN python3 -m pip install --no-cache-dir pysam==0.24.0
 
 ENV PATH=${SOFT}/libdeflate-1.26-br260822/bin:${SOFT}/htslib-1.24-br260709/bin:${SOFT}/samtools-1.24-br260709/bin:${SOFT}/bcftools-1.24-br260709/bin:${SOFT}/vcftools-0.1.17-br250515/bin:${PATH}
-ENV LD_LIBRARY_PATH=${SOFT}/libdeflate-1.26-br260822/lib:${SOFT}/htslib-1.24-br260709/lib
 
 ENV LIBDEFLATE=${SOFT}/libdeflate-1.26-br260822
 ENV HTSLIB=${SOFT}/htslib-1.24-br260709
