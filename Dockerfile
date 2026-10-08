@@ -97,10 +97,6 @@ ENV SAMTOOLS=${SOFT}/samtools-1.24-br260709/bin/samtools
 ENV BCFTOOLS=${SOFT}/bcftools-1.24-br260709/bin/bcftools
 ENV VCFTOOLS=${SOFT}/vcftools-0.1.17-br250515/bin/vcftools
 
-COPY scripts/alleles_to_ref_alt.py /opt/task10/alleles_to_ref_alt.py
-COPY scripts/preprocess_FP_SNPs.sh /opt/task10/preprocess_FP_SNPs.sh
-RUN chmod +x /opt/task10/alleles_to_ref_alt.py /opt/task10/preprocess_FP_SNPs.sh
-
 WORKDIR /work
 
 RUN ${SAMTOOLS} --version \
